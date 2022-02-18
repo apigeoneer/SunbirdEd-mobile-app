@@ -31,6 +31,26 @@ export const actions = {
       color: 'success'
     }
   ],
+  TASK_ACTIONS: [
+    {
+      title: "SHARE",
+      icon: "share",
+      action: "share",
+      color: 'primary'
+    },
+    {
+      title: "EDIT",
+      icon: "create",
+      action: "edit",
+      color: 'primary'
+    },
+    {
+      title: "DELETE",
+      icon: "cloud-delete",
+      action: "delete",
+      color: 'primary'
+    },
+  ],
   SYNC_ACTION: {
     title: "FRMELEMNTS_LBL_SYNC",
     icon: "sync-circle",

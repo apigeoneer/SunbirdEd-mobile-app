@@ -185,6 +185,81 @@ export class ProjectService {
     return payload;
   }
 
+  // task-deatils page functions starts
+  getTaskCompletionPercentage({ subtasks }) {
+    let subtasksCount = subtasks?.length;
+    if (!subtasksCount) {
+      return { completedSubtasks: 0, totalSubtasks: 0 };
+    }
+    let completedSubtaskCount = 0;
+    let validSubtaskCount = 0;
+    for (const subtask of subtasks) {
+      if(!subtask.isDeleted){
+        validSubtaskCount++;
+      }
+      if (subtask.status === statusType.completed && !subtask.isDeleted) {
+        completedSubtaskCount++
+      }
+    }
+    const payload = { completedSubtasks: completedSubtaskCount, totalSubtasks: validSubtaskCount }
+    return payload;
+  }
+
+  // async getTaskDetails({taskId = '', solutionId, isProfileInfoRequired = false, 
+  // programId, templateId='',hasAcceptedTAndC=false, detailsPayload =null, replaceUrl=true}) {
+  //   this.loader.startLoader();
+  //   let payload = isProfileInfoRequired ? await this.utils.getProfileInfo() : {};
+  //   const url = `${taskId ? '/' + taskId : ''}?${templateId ? 'templateId=' + templateId : ''}${solutionId ? ('&&solutionId=' + solutionId) : ''}`;
+  //   const config = {
+  //     url: urlConstants.API_URLS.GET_TASK + url,
+  //     payload: detailsPayload ? detailsPayload : payload
+  //   }
+  //   this.kendra.post(config).subscribe(success => {
+  //     this.loader.stopLoader();
+  //     success.result.hasAcceptedTAndC = hasAcceptedTAndC;
+  //     let taskDetails = success.result;
+  //     let newCategories = [];
+  //     for (const category of taskDetails.categories) {
+  //       if (category._id || category.name) {
+  //         const obj = {
+  //           label: category.name || category.label,
+  //           value: category._id
+  //         }
+  //         newCategories.push(obj)
+  //       }
+  //     }
+  //     taskDetails.categories = newCategories.length ? newCategories : taskDetails.categories;
+  //     if (taskDetails.tasks) {
+  //       taskDetails.tasks.map(t => {
+  //         if ((t.type == 'observation' || t.type == 'assessment') && t.submissionDetails && t.submissionDetails.status) {
+  //           if (t.submissionDetails.status != t.status) {
+  //             t.status = t.submissionDetails.status
+  //             t.isEdit = true;
+  //             taskDetails.isEdit = true
+  //           }
+  //         }
+  //       })
+  //     }
+  //     const navObj = {
+  //       taskId: success.result._id,
+  //       programId: programId,
+  //       solutionId: solutionId,
+  //       replaceUrl:replaceUrl
+  //     }
+  //     this.db.create(success.result).then(successData => {
+  //       // this.navigateTotaskDetails(navObj);
+  //     }).catch(error => {
+  //       if (error.status === 409) {
+  //         // this.navigateTotaskDetails(navObj);
+  //       }
+  //     })
+  //   }, error => {
+  //     this.loader.stopLoader();
+  //   })
+  // }
+  // task-deatils page functions starts
+
+
   async startAssessment(projectId,id){
     if (!this.networkFlag) {
       this.toast.showMessage('FRMELEMNTS_MSG_YOU_ARE_WORKING_OFFLINE_TRY_AGAIN', 'danger');

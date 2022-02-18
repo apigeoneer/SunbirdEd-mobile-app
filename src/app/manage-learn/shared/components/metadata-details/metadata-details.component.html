@@ -2,6 +2,8 @@
   <ion-card-header>
     <ion-card-title>{{data?.title}}</ion-card-title>
     <ion-card-subtitle>{{data?.subTitle}}</ion-card-subtitle>
+    <!-- <p *ngIf="data?.endDate">{{(data?.endDate).toLocaleDateString("en-US")}}</p> -->
+    <p *ngIf="data?.endDate">End date: {{data?.endDate | date}}</p>
   </ion-card-header>
   <ion-card-content class="sb-content-info">
     <ng-content></ng-content>

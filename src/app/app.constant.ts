@@ -586,7 +586,8 @@ export class RouterLinks {
     public static readonly PROJECT_FULL_REPORT = "project-full-report";
     public static readonly DEEPLINK_REDIRECT = "deeplink-redirect";
     public static readonly DETAILS = 'details';
-    public static readonly TASK_VIEW = 'task-view';
+    // public static readonly TASK_VIEW = 'task-view';
+    public static readonly TASK_VIEW = 'task-details';
     public static readonly LEARNING_RESOURCES = 'learning-resources';
     public static readonly SYNC = 'sync';
     public static readonly ATTACHMENTS = 'attachments';

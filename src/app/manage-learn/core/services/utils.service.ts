@@ -34,7 +34,9 @@ export class UtilsService {
   userId;
   mandatoryFields ={};
   taskCount: number = 0;
+  subtaskCount: number = 0;
   sortedTasks;
+  sortedSubtasks;
   filters: any = {};
   statuses = statuses;
   numberTasksCompleted =0;
@@ -120,6 +122,7 @@ export class UtilsService {
         return obj;
     }
   }
+
   getTaskSortMeta() {
     const data = {
       past: {
@@ -145,6 +148,36 @@ export class UtilsService {
       upcoming: {
         label: "LABELS.UPCOMING",
         tasks: []
+      }
+    };
+    return data;
+  }
+
+  getSubtaskSortMeta() {
+    const data = {
+      past: {
+        label: "LABELS.PAST",
+        subtasks: []
+      },
+      today: {
+        label: "LABELS.TODAY",
+        subtasks: []
+      },
+      thisWeek: {
+        label: "LABELS.THIS_WEEK",
+        subtasks: []
+      },
+      thisMonth: {
+        label: "LABELS.THIS_MONTH",
+        subtasks: []
+      },
+      thisQuarter: {
+        label: "LABELS.THIS_QUARTER",
+        subtasks: []
+      },
+      upcoming: {
+        label: "LABELS.UPCOMING",
+        subtasks: []
       }
     };
     return data;
@@ -201,9 +234,60 @@ export class UtilsService {
     return projectData;
   }
 
+  setStatusForTask(task) {
+    const taskData = { ...task };
+    for (const task of taskData.tasks) {
+      const activeSubTask = _.filter(task.children, function(el) {
+        return !el.isDeleted;
+      });
+      task.status = activeSubTask.length
+        ? this.calculateStatus(task.children)
+        : task.status;
+
+      // added for assessment or observation submission statuses
+      if (task.type == "assessment" || task.type == "observation") {
+        if (
+          task.submissionDetails &&
+          task.submissionDetails.status !== statusType.completed
+        ) {
+          if (task.status == statusType.completed) {
+            task.status = statusType.inProgress;
+          }
+        }
+        if (!task.submissionDetails) {
+          if (task.status == statusType.completed) {
+            task.status = statusType.inProgress;
+          }
+        }
+
+        if (
+          task.submissionDetails &&
+          task.submissionDetails.status == statusType.completed &&
+          !task.children.length
+        ) {
+          task.status = statusType.completed;
+        }
+        if (!task.submissionDetails && !task.children.length) {
+          task.status = statusType.notStarted;
+        }
+      }
+    }
+    let taskStatus = this.calculateStatus(taskData.tasks);
+    if (taskData.status) {
+      if (taskData.status == statusType.inProgress && taskStatus == statusType.notStarted) {
+        taskData.status = statusType.inProgress;
+      }else{
+        taskData.status = taskStatus;
+      }
+    } else {
+      taskData.status = statusType.notStarted;
+    }
+    return taskData;
+  }
+
   calculateStatus(childArray) {
     let status;
-    const items = [...childArray];
+    const items = {...childArray};
     const completedList = _.filter(items, function(el) {
       return !el.isDeleted && el.status === statusType.completed;
     });
@@ -717,6 +801,53 @@ async getSortTasks(project:any) {
   return data;
 }
 
+async getSortSubtasks(task:any) {
+  this.subtaskCount = 0;
+  let completed = 0;
+  let inProgress = 0;
+  this.sortedSubtasks = JSON.parse(JSON.stringify(this.getSubtaskSortMeta()));
+  task.subtasks.forEach((subtask: any) => {
+
+    if (!subtask.isDeleted && subtask.endDate) {
+      this.subtaskCount = this.subtaskCount + 1;
+      let ed = JSON.parse(JSON.stringify(subtask.endDate));
+      ed = moment(ed).format("YYYY-MM-DD");
+
+      if (ed < this.filters.today) {
+        this.sortedSubtasks["past"].subtasks.push(subtask);
+      } else if (ed == this.filters.today) {
+        this.sortedSubtasks["today"].subtasks.push(subtask);
+      } else if (ed > this.filters.today && ed <= this.filters.thisWeek) {
+        this.sortedSubtasks["thisWeek"].subtasks.push(subtask);
+      } else if (ed > this.filters.thisWeek && ed <= this.filters.thisMonth) {
+        this.sortedSubtasks["thisMonth"].subtasks.push(subtask);
+      } else if (ed > this.filters.thisMonth && ed <= this.filters.thisQuarter) {
+        this.sortedSubtasks["thisQuarter"].subtasks.push(subtask);
+      }
+      else {
+        this.sortedSubtasks["upcoming"].subtasks.push(subtask);
+      }
+    } else if (!subtask.isDeleted && !subtask.endDate) {
+      this.sortedSubtasks["upcoming"].subtasks.push(subtask);
+      this.subtaskCount = this.subtaskCount + 1;
+    }
+    if (!subtask.isDeleted) {
+      if (subtask.status == this.statuses[1].title) {
+        inProgress = inProgress + 1;
+      } else if (subtask.status == this.statuses[2].title) {
+        completed = completed + 1;
+      }
+    }
+  });
+  let taskData = await this.setStatusForTask(task);
+  let data={
+    task:taskData,
+    sortedSubtasks:this.sortedSubtasks,
+    subtaskCount:this.subtaskCount
+  }
+  return data;
+}
+
 getCompletedTaskCount(tasks){
   // const completedList = _.filter(tasks, function(el) {
   //   return !el.isDeleted && el.status === statusType.completed;
@@ -726,6 +857,15 @@ getCompletedTaskCount(tasks){
     progress: 3 / 7
   }
   console.log(data,"data prgress");
+return data;
+}
+
+getCompletedSubtaskCount(subtasks){
+  let data ={
+    completedSubtasks : 3,
+    progress: 3 / 7
+  }
+  console.log(data,"subtasks data prgress");
 return data;
 }
 }

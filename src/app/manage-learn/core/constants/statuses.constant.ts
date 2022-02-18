@@ -39,3 +39,17 @@ export const projectStatus = {
         value: "submitted"
     }
 }
+export const subtaskStatus = {
+    started: {
+        label: "Started",
+        value: "started"
+    },
+    inProgress: {
+        label: "In Progress",
+        value: "inProgress"
+    },
+    submitted: {
+        label: "Submitted",
+        value: "submitted"
+    }
+}

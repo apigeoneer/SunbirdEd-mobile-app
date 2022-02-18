@@ -1,0 +1,73 @@
+<ion-content class="ion-padding">
+  <app-metadata-details translucent="true" [data]="cardMetaData">
+    <div class="sb-dt-card-actions">
+      <div class="wrapper">
+        <app-metadata-actions (actionEvent)="onAction($event)" [actionItems]="taskActions"></app-metadata-actions>
+      </div>
+
+      <div class="sb-course-progress-container">
+        <!-- *ngIf="taskDetails?.status?.length &&  taskDetails?.status !== allStatusTypes.submitted"> -->
+        <p><strong>{{'TASK_STATUS' | translate}}</strong>
+        </p>
+        <!-- <p>{{taskCompletionPercent?.completedSubtasks}} / {{taskCompletionPercent?.totalSubtasks}} {{'COMPLETED' |
+          translate}}
+        </p> -->
+        <ion-select>
+          <ion-select-option *ngFor="let status of statuses" value="{{status.title}}"
+              selected="status.title === task.status">{{status.title | camelToTitle}}</ion-select-option>
+        </ion-select>
+
+        <ion-progress-bar
+          [ngStyle]="{'--progress-background' : taskProgress?.completedSubtasks == subtaskCount ? 'var(--app-green)' : 'var(--app-quaternary-medium)'}"
+          [value]="taskCompletionPercent?.completedSubtasks/taskCompletionPercent?.totalSubtasks"
+          [ngClass]="{'completed':taskCompletionPercent?.completedSubtasks===taskCompletionPercent?.totalSubtasks, 'in-progress': taskCompletionPercent?.completedSubtasks < taskCompletionPercent?.totalSubtasks}"
+          class="progress-bar-style"></ion-progress-bar>
+      </div>
+
+    </div>
+
+    <!-- *ngIf="task?.status && task?.status !== allStatusTypes.submitted" expand="block" -->
+    <ion-button (click)="submitProjectConfirmation()"
+      class="ion-text-capitalize ion-margin-top"
+      [ngClass]="{'button-disabled':taskCompletionPercent?.completedSubtasks !== taskCompletionPercent?.totalSubtasks}"
+      [disabled]="(taskCompletionPercent?.completedSubtasks !== taskCompletionPercent?.totalSubtasks)">
+      {{'FRMELEMNTS_LBL_SUBMIT_IMPROVEMENT' | translate}}
+    </ion-button>
+
+    <!-- *ngIf="task?.status === allStatusTypes.submitted"> -->
+    <div class="sb-course-complete-container ion-padding" >
+      <div class="img-container">
+        <img class="success-badge" src='assets/imgs/Badge green.svg' alt="completed">
+      </div>
+      <div class="text-container">
+        <p><strong>{{'FRMELEMNTS_LBL_SUBMIT_IMPROVEMENT_SUCCESS_MESSAGE' | translate }}</strong></p>
+      </div>
+    </div>
+  </app-metadata-details>
+
+  <!-- <div  *ngIf="task?.type !='observation' && task?.type != 'assessment'"> -->
+    <div>
+      <h4>{{'FRMELEMNTS_LBL_SUBTASKS' | translate}}</h4>
+      <!-- <ion-row>
+        <ion-col size="3"> <img src="assets/imgs/subdirectory_arrow.png" class="filter-icon arrow-image" /> </ion-col>
+        <ion-col size="9">
+          <ion-item>
+            <ion-input type="text" placeholder="{{'FRMELEMNTS_LBL_ADD_SUBTASK_PALCEHOLDER' | translate}}"
+             [(ngModel)]="newSubtask.name" autocapitalize='on'>
+            </ion-input>
+          </ion-item>
+          <ion-button (click)="addSubtask()" [ngClass]="{'btn-disabled': !newSubtask.name}" class="custom-btn-txt-transform-none">
+          {{'FRMELEMNTS_LBL_ADD_SUBTASK' | translate}} </ion-button>
+            <ion-button>
+            {{'FRMELEMNTS_LBL_ADD_SUBTASK' | translate}} </ion-button>
+        </ion-col>
+      </ion-row> -->
+  </div>
+
+  <app-project-details-card [data]="project" *ngIf="segmentType == 'details'">
+  </app-project-details-card>
+
+  <div *ngIf="segmentType == 'tasks' && project?.tasks?.length">
+    <app-task-card [data]="project"></app-task-card>
+  </div>
+</ion-content>

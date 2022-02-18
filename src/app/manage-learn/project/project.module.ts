@@ -25,6 +25,7 @@ import { PipesModule } from '@app/pipes/pipes.module';
 import { ProjectTemplatePage } from './project-template/project-template.page';
 import { ItemListHeaderComponent } from './item-list-header/item-list-header.component'
 import { ProjectDetailsComponent } from './project-details/project-details.component';
+import { TaskDetailsPage } from './task-details/task-details.page';
 
 const routes: Routes = [
   {
@@ -35,9 +36,13 @@ const routes: Routes = [
     path: `${RouterLinks.DETAILS}`,
     component: ProjectDetailsComponent
   },
+  // {
+  //   path: `${RouterLinks.TASK_VIEW}/:id/:taskId`,
+  //   component: TaskViewPage
+  // },
   {
     path: `${RouterLinks.TASK_VIEW}/:id/:taskId`,
-    component: TaskViewPage
+    component: TaskDetailsPage
   },
   {
     path: `${RouterLinks.LEARNING_RESOURCES}/:id/:taskId`,
@@ -80,7 +85,7 @@ const routes: Routes = [
   declarations: [ProjectDetailPage, ProjectListingComponent, ProjectEditPage, 
     ProjectOperationPage, LearningResourcesPage, SyncPage, TaskViewPage, AttachmentListPage, 
     LinkLearningResourcesComponent, AddEntityComponent, AddProgramsComponent, CreateProjectPage, 
-    CategorySelectComponent,ProjectTemplatePage, ItemListHeaderComponent, ProjectDetailsComponent],
+    CategorySelectComponent,ProjectTemplatePage, ItemListHeaderComponent, ProjectDetailsComponent, TaskDetailsPage],
   entryComponents: [LinkLearningResourcesComponent, AddEntityComponent, 
     AddProgramsComponent, CategorySelectComponent],
   imports: [

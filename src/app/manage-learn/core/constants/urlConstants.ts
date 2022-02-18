@@ -11,6 +11,7 @@ export const urlConstants = {
     GET_TARGETED_SOLUTIONS: '/api/solutions/mlcore/v1/targetedSolutions',
     SOLUTIONS_LISTING: '/api/users/mlcore/v1/solutions/',
     GET_PROJECT: '/api/userProjects/mlprojects/v1/details',
+    GET_TASK: '/api/userProjects/mlprojects/v1/task/details',
     PRIVATE_PROGRAMS: '/v1/users/privatePrograms',
     GET_SUB_ENITIES_FOR_ROLES: '/api/entities/mlcore/v1/subEntityListBasedOnRoleAndLocation/',
     GET_ENTITY_LIST: '/api/entities/mlcore/v1/subEntityList/',
