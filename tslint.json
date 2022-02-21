@@ -117,11 +117,7 @@
     "use-life-cycle-interface": true,
     "use-pipe-transform-interface": true,
     "one-variable-per-declaration": false,
-    "component-class-suffix": [
-      true,
-      "Page",
-      "Component"
-    ],
+    "component-class-suffix": [true, "Page", "Component"],
     "directive-class-suffix": true,
     "variable-name": {
       "options": [
