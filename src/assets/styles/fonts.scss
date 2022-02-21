@@ -1,28 +1,28 @@
 @font-face {
-  font-family: "NotoSans";
-  src: url("/assets/fonts/natosans/NotoSans-Regular.ttf");
+  font-family: 'NotoSans';
+  src: url('/assets/fonts/natosans/NotoSans-Regular.ttf');
   font-weight: normal;
   font-style: normal;
 }
-.NotoSans {
-  font-family: "NotoSans" !important;
-  font-weight: normal;
-  font-style: normal;
-}
+  .NotoSans {
+      font-family: 'NotoSans' !important;
+      font-weight: normal;
+      font-style: normal;
+  }
 
-.NotoSans-semi-bold {
-  font-family: "NotoSans" !important;
-  font-weight: 600 !important;
-}
+  .NotoSans-semi-bold {
+    font-family: 'NotoSans' !important;
+    font-weight: 600 !important;
+  };
 
-.NotoSans-bold {
-  font-family: "NotoSans" !important;
-  font-weight: 700 !important;
-}
-.NotoSans-extra-bold {
-  font-family: "NotoSans" !important;
-  font-weight: 900 !important;
-}
+  .NotoSans-bold {
+      font-family: 'NotoSans' !important;
+      font-weight: 700 !important;
+  }
+  .NotoSans-extra-bold {
+      font-family: 'NotoSans' !important;
+      font-weight: 900 !important;
+  }
 
 .font-weight-400 {
   font-weight: 400 !important;
@@ -60,18 +60,19 @@
   font-weight: bolder !important;
 }
 
-.f18 {
+.f18{
   font-size: 18px;
 }
 
-.f16 {
+.f16{
   font-size: 16px;
 }
 
-.f14 {
+.f14{
   font-size: 14px;
 }
 
-.text-center {
+.text-center{
   text-align: center;
 }
+
